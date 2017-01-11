@@ -3,19 +3,16 @@ package io.crdant.spring.tasks.unzip;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.stream.messaging.Processor;
+import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.cloud.stream.test.binder.MessageCollector;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Random;
-import java.util.concurrent.BlockingQueue;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -108,6 +105,7 @@ public class UnzipProcessorTest {
             channels.input().send(new GenericMessage<Object>(content));
             assertThat(messageCollector.forChannel(channels.output()).poll(10, MILLISECONDS), is(nullValue(Message.class)));
         }
-
     }
+
+
 }
