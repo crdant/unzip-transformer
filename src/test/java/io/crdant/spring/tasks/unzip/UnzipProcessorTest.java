@@ -25,7 +25,7 @@ import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {UnzipProcessorApplication.class})
 @DirtiesContext
-public class UnzipProcessorTest {
+public abstract class UnzipProcessorTest {
 
     @Autowired
     protected Processor channels ;
@@ -96,7 +96,7 @@ public class UnzipProcessorTest {
     }
 
     @SpringBootTest
-    public static class onlyHandlesZip extends UnzipProcessorTest {
+    public static class rejectsNotZip extends UnzipProcessorTest {
 
         @Test
         public void testRequest() throws Exception {
