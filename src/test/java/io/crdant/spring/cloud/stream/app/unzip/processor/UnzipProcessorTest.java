@@ -1,4 +1,4 @@
-package io.crdant.spring.tasks.unzip;
+package io.crdant.spring.cloud.stream.app.unzip.processor;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +23,7 @@ import static org.junit.Assert.assertThat;
 import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.receivesPayloadThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = {UnzipProcessorApplication.class})
+@SpringBootTest(classes = {UnzipProcessor.class})
 @DirtiesContext
 public abstract class UnzipProcessorTest {
 
@@ -52,12 +52,12 @@ public abstract class UnzipProcessorTest {
         }
     }
 
-    @SpringBootTest("file=second.txt")
+    @SpringBootTest("unzip.entry=second.txt")
     public static class TestSelectsFile extends UnzipProcessorTest {
         @Test
         public void testRequest() throws Exception {
-            byte[] content1 = new String("First file").getBytes();
-            byte[] content2 = new String("Second file").getBytes();
+            byte[] content1 = new String("First entry").getBytes();
+            byte[] content2 = new String("Second entry").getBytes();
 
             ByteArrayOutputStream output = new ByteArrayOutputStream();
 
@@ -75,7 +75,7 @@ public abstract class UnzipProcessorTest {
         }
     }
 
-    @SpringBootTest("file=bytes")
+    @SpringBootTest("unzip.entry=bytes")
     public static class handlesBinary extends UnzipProcessorTest {
         @Test
         public void testRequest() throws Exception {

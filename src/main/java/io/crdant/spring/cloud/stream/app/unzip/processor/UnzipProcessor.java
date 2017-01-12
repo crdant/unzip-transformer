@@ -1,13 +1,11 @@
-package io.crdant.spring.tasks.unzip;
+package io.crdant.spring.cloud.stream.app.unzip.processor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Processor;
-import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.ServiceActivator;
 
 import java.io.ByteArrayInputStream;
@@ -17,12 +15,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 /**
- * Extract a file from the zip file provided in the payload.
+ * Extract a entry from the zip entry provided in the payload.
  */
 @EnableBinding(Processor.class)
-@ConfigurationProperties("module.unzip")
 @EnableConfigurationProperties(UnzipProcessorProperties.class)
-@MessageEndpoint
 public class UnzipProcessor {
     int BUFFER_SIZE = 8*1024;
     private static Logger logger = LoggerFactory.getLogger(UnzipProcessor.class);
@@ -39,11 +35,11 @@ public class UnzipProcessor {
             if ( hasSingleEntry(payload) ) {
                 outputPayload = extractSingleEntry(payload);
             } else {
-                outputPayload = extractEntry(payload, properties.getFile());
+                outputPayload = extractEntry(payload, properties.getEntry());
             }
             return outputPayload ;
         } catch ( IOException ioEx ) {
-            logger.error("Error reading the zip file");
+            logger.error("Error reading the zip entry");
             return null ;
         }
     }
@@ -71,7 +67,7 @@ public class UnzipProcessor {
         int bytesRead = 0;
         byte[] result = null;
 
-        logger.debug("extracting single file: " + entry.getName());
+        logger.debug("extracting single entry: " + entry.getName());
         while ((bytesRead = zip.read(buffer, 0, BUFFER_SIZE)) != -1) {
             content.write(buffer, 0, bytesRead);
         }
@@ -88,7 +84,7 @@ public class UnzipProcessor {
 
         while ( ( entry = zip.getNextEntry() ) != null ) {
             if ( entry.getName().equals(name) ) {
-                logger.debug("extracting file: " + name);
+                logger.debug("extracting entry: " + name);
                 while ( ( bytesRead = zip.read(buffer, 0, BUFFER_SIZE) ) != -1 ) {
                     content.write(buffer, 0, bytesRead);
                 }

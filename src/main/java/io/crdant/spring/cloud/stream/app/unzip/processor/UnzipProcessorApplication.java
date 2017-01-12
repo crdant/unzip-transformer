@@ -1,4 +1,4 @@
-package io.crdant.spring.tasks.unzip;
+package io.crdant.spring.cloud.stream.app.unzip.processor;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
