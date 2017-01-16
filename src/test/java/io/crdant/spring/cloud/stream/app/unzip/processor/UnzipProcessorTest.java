@@ -3,6 +3,7 @@ package io.crdant.spring.cloud.stream.app.unzip.processor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
@@ -23,7 +24,7 @@ import static org.junit.Assert.assertThat;
 import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.receivesPayloadThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = {UnzipProcessor.class})
+@SpringBootTest(classes = { UnzipProcessorApplication.class })
 @DirtiesContext
 public abstract class UnzipProcessorTest {
 
@@ -106,6 +107,5 @@ public abstract class UnzipProcessorTest {
             assertThat(messageCollector.forChannel(channels.output()).poll(10, MILLISECONDS), is(nullValue(Message.class)));
         }
     }
-
 
 }
